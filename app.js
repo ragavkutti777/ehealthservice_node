@@ -25,13 +25,13 @@ io.on("connection",function(socket)
 
     socket.join("room01-ehealth");
 
-    socket.emit("notify",{'message':"Welcome to Golite"});
+    socket.emit("notify",{'message':"Welcome to E-Health"});
 
 });
 
 
 app.get('/',function(req,res){
-    res.send("<marquee>ehealth is online</marquee>");
+    res.send("<marquee>E-health is online</marquee>");
 });
 app.get('/high',function(req,res){
     console.log("high");
