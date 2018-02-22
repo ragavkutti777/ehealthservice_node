@@ -5,6 +5,16 @@ var bodyparser=require("body-parser");
 var http=require('http').Server(app);
 var io=require('socket.io')(http);
 
+var data=0;
+var temp=0,hum=0;
+
+function notify(req,res,next)
+{
+    console.log("request been made"+req.url);
+    next();
+}
+
+app.use(notify);
 app.use(bodyparser.json({limit: '50mb'}));
 app.use(bodyparser.urlencoded({limit: '50mb', extended: true}));
 
@@ -13,22 +23,31 @@ io.on("connection",function(socket)
 {
     console.log("A user connected:" + socket.id);
 
-    socket.join("room01-ehealthservice");
+    socket.join("room01-ehealth");
 
-    socket.emit("notify",{'message':"Welcome to E-Health service"});
+    socket.emit("notify",{'message':"Welcome to Golite"});
 
 });
 
+
+app.get('/',function(req,res){
+    res.send("<marquee>ehealth is online</marquee>");
+});
 app.get('/high',function(req,res){
     console.log("high");
-    io.to("room01-ehealthservice").emit('notify',{'message':"Alert"});
+    io.to("room01-ehealth").emit('notify',{'message':"Grocery level is HIGH"});
     res.send("done");
 });
 
-app.get('/',function(req,res){
-    res.send("<marquee>E Health Care is online</marquee>");
+app.get('/low',function(req,res){
+    console.log("low");
+    io.to("room01-ehealth").emit('notify',{'message':"Grocery level is LOW"});
+    res.send("done");
 });
+
+
 
 var server=http.listen(process.env.PORT || 5000,function(){
     console.log("server running in port "+(process.env.PORT || 5000));
 });
+
