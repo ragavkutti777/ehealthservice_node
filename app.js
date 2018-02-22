@@ -25,6 +25,10 @@ app.get('/high',function(req,res){
     res.send("done");
 });
 
+app.get('/',function(req,res){
+    res.send("<marquee>E Health Care is online</marquee>");
+});
+
 var server=http.listen(process.env.PORT || 5000,function(){
     console.log("server running in port "+(process.env.PORT || 5000));
 });
