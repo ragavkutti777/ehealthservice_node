@@ -7,13 +7,6 @@ var io=require('socket.io')(http);
 
 var data=200;
 
-function notify(req,res,next)
-{
-    console.log("request been made"+req.url);
-    next();
-}
-
-app.use(notify);
 app.use(bodyparser.json({limit: '50mb'}));
 app.use(bodyparser.urlencoded({limit: '50mb', extended: true}));
 
@@ -26,7 +19,11 @@ io.on("connection",function(socket)
 
     socket.emit("notify",{'message':"Welcome to E-Health care"});
 
+    socket.on('alert',function(data){
+        socket.emit("alert_m",{'message':"Alert triggered manually!!please go for medical checkup"});
+    });
 });
+
 
 
 app.get('/',function(req,res){
@@ -34,24 +31,24 @@ app.get('/',function(req,res){
 });
 app.get('/high',function(req,res){
     console.log("high");
-    io.to("room01-ehealth").emit('notify',{'message':"Heartbeat is HIGH"});
+    io.to("room01-ehealth").emit('notify',{'message':"Alert: Heartbeat is HIGH!!please go for medical checkup"});
+    res.send("done");
+});
+
+app.get('/value',function(req,res){
+    console.log(req.query.storage);
+    data=req.query.storage;
+    io.to("room01-ehealth").emit('rk',{'message':data});
     res.send("done");
 });
 
 app.get('/low',function(req,res){
     console.log("low");
-    io.to("room01-ehealth").emit('notify',{'message':"Heartbeat is LOW"});
+    io.to("room01-ehealth").emit('notify',{'message':"Alert: Heartbeat is LOW!!please consult with the doctor"});
     res.send("done");
 });
 
-app.post("/datum",function(req,res){
-    var d={
-        result:[{
-            storage:data
-        }]
-    };
-    res.send(JSON.stringify(d));
-});
+
 
 
 var server=http.listen(process.env.PORT || 5000,function(){
