@@ -35,6 +35,12 @@ app.get('/high',function(req,res){
     res.send("done");
 });
 
+app.get('/Alert',function(req,res){
+    console.log("Manual Alert");
+    io.to("room01-ehealth").emit('notify',{'message':"Alert triggered manually!!please go for medical checkup"});
+    res.send("done");
+});
+
 app.get('/value',function(req,res){
     console.log(req.query.storage);
     data=req.query.storage;
