@@ -37,7 +37,7 @@ app.get('/high',function(req,res){
 
 app.get('/Alert',function(req,res){
     console.log("Manual Alert received");
-    io.to("room01-ehealth").emit('notify',{'message':"Alert triggered manually!!please go for medical checkup"});
+    io.to("room01-ehealth").emit('alert_m',{'message':"Alert triggered manually!!please go for medical checkup"});
     res.send("done");
 });
 
