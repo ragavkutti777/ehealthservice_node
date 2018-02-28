@@ -20,7 +20,7 @@ io.on("connection",function(socket)
     socket.emit("notify",{'message':"Welcome to E-Health care"});
 
     socket.on('alert',function(data){
-        socket.emit("alert_m",{'message':"Alert triggered manually!!please go for medical checkup"});
+        io.to("room01-ehealth").emit("alert_m",{'message':"Alert triggered manually!!please go for medical checkup"});
     });
 });
 
