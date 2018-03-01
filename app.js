@@ -20,7 +20,7 @@ io.on("connection",function(socket)
     socket.emit("notify",{'message':"Welcome to E-Health care"});
 
     socket.on('alert',function(data){
-        socket.emit("alert_m",{'message':"Alert triggered manually!!please go for medical checkup"});
+        io.to("room01-ehealth").emit("alert_m",{'message':"Alert triggered manually!!please go for medical checkup"});
     });
 });
 
@@ -32,6 +32,12 @@ app.get('/',function(req,res){
 app.get('/high',function(req,res){
     console.log("high");
     io.to("room01-ehealth").emit('notify',{'message':"Alert: Heartbeat is HIGH!!please go for medical checkup"});
+    res.send("done");
+});
+
+app.get('/Alert',function(req,res){
+    console.log("Manual Alert received");
+    io.to("room01-ehealth").emit('alert_m',{'message':"Alert triggered manually!!please go for medical checkup"});
     res.send("done");
 });
 
