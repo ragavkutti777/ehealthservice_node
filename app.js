@@ -16,9 +16,7 @@ io.on("connection",function(socket)
     console.log("A user connected:" + socket.id);
 
     socket.join("room01-ehealth");
-
     socket.emit("notify",{'message':"Welcome to E-Health care"});
-
     socket.on('alert',function(data){
         io.to("room01-ehealth").emit("alert_m",{'message':"Alert triggered manually!!please go for medical checkup"});
     });
@@ -41,6 +39,24 @@ app.get('/Alert',function(req,res){
     res.send("done");
 });
 
+app.get('/water',function(req,res){
+    console.log("Manual Alert received");
+    io.to("room01-ehealth").emit('alert_m',{'message':"Alert triggered manually for water!!"});
+    res.send("done");
+});
+
+app.get('/food',function(req,res){
+    console.log("Manual Alert received");
+    io.to("room01-ehealth").emit('alert_m',{'message':"Alert triggered manually for Food!!"});
+    res.send("done");
+});
+
+app.get('/restroom',function(req,res){
+    console.log("Manual Alert received");
+    io.to("room01-ehealth").emit('alert_m',{'message':"Alert triggered manually for Restroom!!"});
+    res.send("done");
+});
+
 app.get('/value',function(req,res){
     console.log(req.query.storage);
     data=req.query.storage;
@@ -54,10 +70,6 @@ app.get('/low',function(req,res){
     res.send("done");
 });
 
-
-
-
 var server=http.listen(process.env.PORT || 5000,function(){
     console.log("server running in port "+(process.env.PORT || 5000));
 });
-
